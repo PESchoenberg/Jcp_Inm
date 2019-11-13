@@ -1,6 +1,6 @@
 # Jcp_Inm - Real estate and pedestrian traffic dataset.
 
-
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3541132.svg)](https://doi.org/10.5281/zenodo.3541132)
 
 
 ## Overview:
