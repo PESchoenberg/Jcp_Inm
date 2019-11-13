@@ -37,7 +37,7 @@
 (use-modules (grsp grsp0))
 
 
-; Vars
+; Vars. Change the path(s) to your installation.
 (define mc 0)
 (define sqlp-path "/home/pablo/Programs/C++/sqlp/sqlp")
 (define database "/home/pablo/Datasets/Jcp_Inm/data/jcp_inm.db")
@@ -83,7 +83,7 @@
     res))
 
 
-; mult-adr - construct a block addres based on a choice.
+; mult-adr - Construct a block addres based on a choice.
 ;
 ; Arguments
 ; - p_n: number.
@@ -97,6 +97,9 @@
     res))
 
 
+; asl-street-number - Establish the street block number to which a measurement
+; belongs
+;
 (define (ask-street-number)
   (let ((res 0)
 	(mc 0))
@@ -145,7 +148,7 @@
     res))
 
 
-; ask-street-abr presents a menu with the various street name abbreviations.
+; ask-street-abr - Presents a menu with the various street name abbreviations.
 ;
 (define (ask-street-abr)
   (let ((res "")
@@ -234,7 +237,7 @@
     res))
 
 
-; write-prep-sql - overwrites the contents of prep.sql with the values
+; write-prep-sql - Overwrites the contents of prep.sql with the values
 ; conmtained in the arguments. 
 ;
 ; Arguments:
@@ -293,7 +296,6 @@
 			   " WHERE Year IS NULL;")
 		     0))))
     
-
 
 ; run-prep-sql - Runs the existing prep.sql.
 ;
