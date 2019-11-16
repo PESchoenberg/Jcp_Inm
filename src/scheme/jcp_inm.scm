@@ -83,13 +83,13 @@
     res))
 
 
-; mult-adr - Construct a block addres based on a choice.
+; mult-adr - Construct a block address based on a choice.
 ;
 ; Arguments
 ; - p_n: number.
 ;
 ; Output:
-; - p_n lultiplied by 100 to bild the block address.
+; - p_n multiplied by 100 to build the block address.
 ;
 (define (mult-adr p_n)
   (let ((res 0))
@@ -97,8 +97,8 @@
     res))
 
 
-; asl-street-number - Establish the street block number to which a measurement
-; belongs
+; ask-street-number - Establish the street block number to which a measurement
+; belongs.
 ;
 (define (ask-street-number)
   (let ((res 0)
@@ -149,6 +149,7 @@
 
 
 ; ask-street-abr - Presents a menu with the various street name abbreviations.
+; used in the dataset.
 ;
 (define (ask-street-abr)
   (let ((res "")
@@ -203,11 +204,7 @@
     (clear)
     (ptit "=" 60 2 p_ti)
     (ptit " " 60 0 p_te)
-    (display " ")
-    (newline)
-    (if (eq? p_en "y")(begin
-			(display "Press <ENT> to continue.")
-			(set! n (read))))))
+    (if (eq? p_en "y")(set! n (grsp-ask "Press <ENT> to continue.")))))
 
 
 ; menu-enter-data - Enter data menu.
@@ -219,7 +216,7 @@
   (let ((res 0))
     (grsp-ld "0 - Back to main.")
     (grsp-ld "1 - Update prep.sql.")
-    (grsp-ld "2 - Enter block data.")
+    (grsp-ld "2 - Input block data.")
     (set! res (grsp-ask opt))
     res))
 
@@ -232,7 +229,7 @@
 (define (menu-block-data)
   (let ((res 0))
     (grsp-ld "0 - No more records.")
-    (grsp-ld "1 - Enter a record.")
+    (grsp-ld "1 - Insert a new record.")
     (set! res (grsp-ask opt))
     res))
 
@@ -266,13 +263,13 @@
 		    (strings-append
 		     (list (strings-append
 			    (list q8 "Hr =")1)
-			   (grsp-n2s (grsp-ask "\nHour? "))
+			   (grsp-n2s (grsp-ask "Hour? "))
 			   " WHERE Hr IS NULL;")
 		     0)
 		    (strings-append
 		     (list (strings-append
 			    (list q8 "Dayn =") 1)
-			   (grsp-n2s (grsp-ask "\nDay of month? "))
+			   (grsp-n2s (grsp-ask "Day of month? "))
 			   " WHERE Dayn IS NULL;")
 		     0)
 		    (strings-append
@@ -286,13 +283,13 @@
 		    (strings-append
 		     (list (strings-append
 			    (list q8 "Monthn =") 1)
-			   (grsp-n2s (grsp-ask "\nMonth? "))
+			   (grsp-n2s (grsp-ask "Month? "))
 			   " WHERE Monthn IS NULL;")
 		     0)
 		    (strings-append
 		     (list (strings-append
 			    (list q8 "Year =") 1)
-			   (grsp-n2s (grsp-ask "\nYear? "))
+			   (grsp-n2s (grsp-ask "Year? "))
 			   " WHERE Year IS NULL;")
 		     0))))
     
@@ -317,7 +314,7 @@
 	       "', '"
 	       (grsp-n2s (ask-street-number))
 	       "', "
-	       (grsp-n2s (grsp-ask "\nNumber of people? "))
+	       (grsp-n2s (grsp-ask "Number of people? "))
 	       ");\"")
 	      0)
 	     oqc))
@@ -343,20 +340,20 @@
     (while (equal? #f (equal? mc 0))
 	   (menu-present "Jcp_inm - input data" pdf "n")
 	   (set! mc (menu-enter-data))
-	   (cond ((equal? mc 0)(grsp-cd "\nBack to main menu!\n"))
+	   (cond ((equal? mc 0)(grsp-cd "Back to main menu!\n"))
 		 ((equal? mc 1)(update-prep))
 		 ((equal? mc 2)(enter-block-data))
 		 (else (wrch))))))
 
 
-; process-data - Data processing.
+; process-data - Data processing sqlp call.
 ;
 (define (process-data)
   (grsp-cd "Processing data...\n")
   (grsp-sqlp sqlp-path database (strings-append (list sql-path "calc.sql") 0) oqc))
 
 
-; report-data - Data reporting.
+; report-data - Data reporting sqlp call.
 ;
 (define (report-data)
   (grsp-cd "Generating report...\n")
@@ -383,7 +380,7 @@
 (while (equal? #f (equal? mc 0))
        (menu-present "Jcp_inm - main" pdf "n")
        (set! mc (menu-main))
-       (cond ((equal? mc 0)(begin (clear)(grsp-ld "Bye!\n")))
+       (cond ((equal? mc 0)(grsp-cd "Bye!\n"))
 	     ((equal? mc 1)(enter-data))
 	     ((equal? mc 2)(process-data))
 	     ((equal? mc 3)(report-data))
