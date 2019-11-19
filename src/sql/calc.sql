@@ -89,3 +89,20 @@ UPDATE trf_streets SET Value_ppers = (SELECT ROUND(AVG(Value_ppers), 2) FROM  tr
 UPDATE trf_streets SET Est_final_ppmc = (SELECT ROUND((Value_ppers * Avg_pers), 2) FROM trf_streets WHERE Avg_ppmc IS NOT NULL AND Avg_ppmc > 0 AND Samples_total > 31);
 UPDATE trf_streets SET Est_final_ppmc = (SELECT ROUND((( SELECT AVG(Value_ppers) FROM trf_streets WHERE Value_ppers IS NOT NULL AND Value_ppers > 0) * Avg_pers), 2) FROM trf_streets WHERE Avg_ppmc IS NOT NULL AND Avg_ppmc > 0 AND Samples_total > 31);
 UPDATE trf_streets SET Est_final_ppmc = ROUND((Value_ppers * Avg_pers), 2);
+UPDATE trf_blocks SET Avg_pers = ( SELECT ROUND(AVG(Value),0) FROM trf_pers WHERE Abr = trf_blocks.Abr AND Alt = trf_blocks.Alt );
+UPDATE trf_blocks SET Avg_samples = ( SELECT COUNT (*) FROM trf_pers WHERE Abr = trf_blocks.Abr AND Alt = trf_blocks.Alt );
+UPDATE trf_blocks SET Stat_relevant = 'NONE' WHERE Avg_samples < 36;
+UPDATE trf_blocks SET Stat_relevant = 'LOW' WHERE Avg_samples >= 36;
+UPDATE trf_blocks SET Stat_relevant = 'MEDIUM' WHERE Avg_samples >= 72;
+UPDATE trf_blocks SET Stat_relevant = 'HIGH' WHERE Avg_samples >= 108;
+UPDATE trf_blocks SET Est_final_ppmc = ( ( SELECT MAX( Est_avg_ppmc ) FROM trf_streets) / ( SELECT AVG(Avg_pers) FROM trf_streets WHERE Samples_total > 0) );
+UPDATE trf_blocks SET Est_final_ppmc = (ROUND( ( Est_final_ppmc * Avg_pers ), 2 ));
+SELECT * FROM trf_streets WHERE Samples_total > 0 ORDER BY Avg_pers DESC;
+SELECT * FROM trf_blocks ORDER BY Est_final_ppmc DESC;
+UPDATE trf_blocks SET m1s = ( ROUND ( Est_final_ppmc - ( Est_final_ppmc * 0.15 ), 2 ) );
+UPDATE trf_blocks SET p1s = ( ROUND ( Est_final_ppmc + ( Est_final_ppmc * 0.15 ), 2 ) );
+UPDATE trf_blocks SET m2s = ( ROUND ( Est_final_ppmc - ( Est_final_ppmc * 0.30 ), 2 ) );
+UPDATE trf_blocks SET p2s = ( ROUND ( Est_final_ppmc + ( Est_final_ppmc * 0.30 ), 2 ) );
+UPDATE trf_blocks SET m3s = ( ROUND ( Est_final_ppmc - ( Est_final_ppmc * 0.45 ), 2 ) );
+UPDATE trf_blocks SET p3s = ( ROUND ( Est_final_ppmc + ( Est_final_ppmc * 0.45 ), 2 ) );
+
