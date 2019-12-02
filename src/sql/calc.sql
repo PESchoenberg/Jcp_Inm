@@ -108,6 +108,6 @@ UPDATE trf_blocks SET p1s = ( SELECT ROUND ( ( Est_final_ppmc + ( ( stdev( SELEC
 UPDATE trf_blocks SET m2s = ( SELECT ROUND ( ( Est_final_ppmc - ( ( stdev( SELECT Est_final_ppmc FROM trf_blocks ) ) * 2 ) ), 2 ) FROM trf_blocks );
 UPDATE trf_blocks SET p2s = ( SELECT ROUND ( ( Est_final_ppmc + ( ( stdev( SELECT Est_final_ppmc FROM trf_blocks ) ) * 2 ) ), 2 ) FROM trf_blocks );
 UPDATE trf_blocks SET m3s = ( SELECT ROUND ( ( Est_final_ppmc - ( ( stdev( SELECT Est_final_ppmc FROM trf_blocks ) ) * 3 ) ), 2 ) FROM trf_blocks );
-UPDATE trf_blocks SET p3s = ( SELECT ROUND ( ( Est_final_ppmc + ( ( stdev( SELECT Est_final_ppmc FROM trf_blocks ) ) * 3 ) ), 2 ) FROM trf_blocks );
+UPDATE trf_blocks SET p3s = ( SELECT ROUND ( ( Est_final_ppmc + ( ( sqrt( SELECT Est_final_ppmc FROM trf_blocks ) ) * 3 ) ), 2 ) FROM trf_blocks );
 SELECT * FROM trf_streets WHERE Samples_total > 0 ORDER BY Avg_pers DESC;
 SELECT * FROM trf_blocks ORDER BY Est_final_ppmc DESC;
