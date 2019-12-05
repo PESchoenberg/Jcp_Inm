@@ -37,7 +37,8 @@
 (use-modules (grsp grsp0))
 
 
-; Vars. Change the path(s) to your installation.
+; Vars. Change the path(s) to suit your system and installation.
+;
 (define mc 0)
 (define sqlp-path "/home/pablo/Programs/C++/sqlp/sqlp")
 (define database "/home/pablo/Datasets/Jcp_Inm/data/jcp_inm.db")
@@ -192,7 +193,7 @@
 ; menu-present - This is a presentation for the program and what it intends to
 ; do.
 ;
-; Arrguments:
+; Arguments:
 ; - p_ti: title.
 ; - p_te: text.
 ; - p_en: if you want an <ENT> message to appear.
@@ -235,7 +236,7 @@
 
 
 ; write-prep-sql - Overwrites the contents of prep.sql with the values
-; conmtained in the arguments. 
+; contained in the arguments. 
 ;
 ; Arguments:
 ; - p_q1: q1.
@@ -320,8 +321,8 @@
 	     oqc))
 
 
-; enter-block-data - Enter block data. allows for data input to trf_ppers, and 
-; batch update with pers.sql once finished entering records.
+; enter-block-data - Enter block data. allows for data input to trf_pers, and 
+; batch update with prep.sql once finished entering records.
 ;
 (define (enter-block-data)
   (let ((mc -1))
