@@ -34,7 +34,8 @@
 
 
 ; Modules. These will be almost always required.
-(use-modules (grsp grsp0))
+(use-modules (grsp grsp0)
+	     (srfi srfi-19))
 
 
 ; Vars. Change the path(s) to suit your system and installation.
