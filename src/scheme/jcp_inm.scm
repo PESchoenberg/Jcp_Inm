@@ -47,6 +47,7 @@
 (define pdf "See docs/jcp_inm.pdf for details.")
 (define oqc "OPEN_QUERY_CLOSE")
 (define oqcs "OPEN_QUERY_CLOSE_SHOW")
+(define oqcp "PRETTY_SHOW")
 (define opt "? ")
 
 
@@ -359,8 +360,12 @@
 ;
 (define (report-data)
   (grsp-cd "Generating report...\n")
-  (grsp-sqlp sqlp-path database (strings-append (list sql-path "rep.sql") 0) oqcs))
-
+  (grsp-sqlp sqlp-path database (strings-append (list sql-path "rep.sql") 0) oqcs)
+  (grsp-sqlp sqlp-path "sqlp_results.txt" "COLS=6" oqcp)
+  (clear)
+  (display (read-file-as-string "sqlp_pretty_tmp.txt"))
+  (grsp-ask "Press <ENT> to continue."))
+  
 
 ; menu-main - Main menu of the program.
 ;
