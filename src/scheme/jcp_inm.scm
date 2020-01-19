@@ -237,6 +237,36 @@
     res))
 
 
+; menu-process-data - Process data menu.
+;
+; Output:
+; - Returns an integer corresponding to the menu option selected.
+;
+(define (menu-process-data)
+  (let ((res 0))
+    (grsp-ld "0 - Main menu.")
+    (grsp-ld "1 - Process ppers.")
+    (grsp-ld "2 - Process pvehp.")
+    (grsp-ld "3 - Process pvehr.")     
+    (set! res (grsp-ask opt))
+    res))
+
+
+; menu-report-data - Report data menu.
+;
+; Output:
+; - Returns an integer corresponding to the menu option selected.
+;
+(define (menu-report-data)
+  (let ((res 0))
+    (grsp-ld "0 - Main menu.")
+    (grsp-ld "1 - Report existing ppers.")
+    (grsp-ld "2 - Report existing pvehp.")
+    (grsp-ld "3 - Report existing pvehr.")     
+    (set! res (grsp-ask opt))
+    res))
+
+
 ; write-prep-sql - Overwrites the contents of prep.sql with the values
 ; contained in the arguments. 
 ;
@@ -311,14 +341,18 @@
 	     database
 	     (strings-append
 	      (list
-	       "\"INSERT INTO trf_pers (Abr, Alt, Value) VALUES("
+	       "\"INSERT INTO trf_pers (Abr, Alt, Value, Vehp, Vehr) VALUES("
 	       "'"
 	       (ask-street-abr)
 	       "', '"
 	       (grsp-n2s (ask-street-number))
-	       "', "
+	       "', '"
 	       (grsp-n2s (grsp-ask "Number of people? "))
-	       ");\"")
+	       "', '"
+	       (grsp-n2s (grsp-ask "Vehicles parked? "))
+	       "', '"
+	       (grsp-n2s (grsp-ask "Vehicles running? "))	       
+	       "');\"")
 	      0)
 	     oqc))
 
@@ -349,23 +383,88 @@
 		 (else (wrch))))))
 
 
-; process-data - Data processing sqlp call.
+; process-data-opt - Enter block data. allows for data input to trf_pers, and 
+; batch update with prep.sql once finished entering records.
 ;
-(define (process-data)
-  (grsp-cd "Processing data...\n")
+(define (process-data-opt)
+  (let ((mc -1))
+    (while (equal? #f (equal? mc 0))
+	   (menu-present "Jcp_inm - process data options" pdf "n")
+	   (set! mc (menu-process-data))
+	   (cond ((equal? mc 0)(grsp-cd "Back to main menu!\n"))
+		 ((equal? mc 1)(process-data1))
+		 ((equal? mc 2)(process-data2))
+		 ((equal? mc 3)(process-data3))
+		 (else (wrch))))))
+
+
+; report-data-opt - Report data options.
+;
+(define (report-data-opt)
+  (let ((mc -1))
+    (while (equal? #f (equal? mc 0))
+	   (menu-present "Jcp_inm - report data options" pdf "n")
+	   (set! mc (menu-report-data))
+	   (cond ((equal? mc 0)(grsp-cd "Back to main menu!\n"))
+		 ((equal? mc 1)(report-data1))
+		 ((equal? mc 2)(report-data2))
+		 ((equal? mc 3)(report-data3))
+		 (else (wrch))))))
+
+
+; process-data1 - Data processing sqlp call, pers.
+;
+(define (process-data1)
+  (grsp-cd "Processing data (pers)...\n")
   (grsp-sqlp sqlp-path database (strings-append (list sql-path "calc.sql") 0) oqc))
 
 
-; report-data - Data reporting sqlp call.
+; process-data2 - Data processing sqlp call, vehp.
 ;
-(define (report-data)
-  (grsp-cd "Generating report...\n")
+(define (process-data2)
+  (grsp-cd "Processing data (vehp)...\n")
+  (grsp-sqlp sqlp-path database (strings-append (list sql-path "calc2.sql") 0) oqc))
+
+
+; process-data2 - Data processing sqlp call, vehp.
+;
+(define (process-data3)
+  (grsp-cd "Processing data (vehr)...\n")
+  (grsp-sqlp sqlp-path database (strings-append (list sql-path "calc3.sql") 0) oqc))
+
+
+; report-data1 - Data reporting sqlp call (pers).
+;
+(define (report-data1)
+  (grsp-cd "Generating report (pers)...\n")
   (grsp-sqlp sqlp-path database (strings-append (list sql-path "rep.sql") 0) oqcs)
   (grsp-sqlp sqlp-path "sqlp_results.txt" "COLS=6" oqcp)
   (clear)
   (display (read-file-as-string "sqlp_pretty_tmp.txt"))
   (grsp-ask "Press <ENT> to continue."))
-  
+
+
+; report-data1 - Data reporting sqlp call (vehp).
+;
+(define (report-data2)
+  (grsp-cd "Generating report (vehp)...\n")
+  (grsp-sqlp sqlp-path database (strings-append (list sql-path "rep2.sql") 0) oqcs)
+  (grsp-sqlp sqlp-path "sqlp_results.txt" "COLS=6" oqcp)
+  (clear)
+  (display (read-file-as-string "sqlp_pretty_tmp.txt"))
+  (grsp-ask "Press <ENT> to continue."))
+
+
+; report-data1 - Data reporting sqlp call (vehr).
+;
+(define (report-data3)
+  (grsp-cd "Generating report (vehr)...\n")
+  (grsp-sqlp sqlp-path database (strings-append (list sql-path "rep3.sql") 0) oqcs)
+  (grsp-sqlp sqlp-path "sqlp_results.txt" "COLS=6" oqcp)
+  (clear)
+  (display (read-file-as-string "sqlp_pretty_tmp.txt"))
+  (grsp-ask "Press <ENT> to continue."))
+
 
 ; menu-main - Main menu of the program.
 ;
@@ -389,7 +488,7 @@
        (set! mc (menu-main))
        (cond ((equal? mc 0)(grsp-cd "Bye!\n"))
 	     ((equal? mc 1)(enter-data))
-	     ((equal? mc 2)(process-data))
-	     ((equal? mc 3)(report-data))
+	     ((equal? mc 2)(process-data-opt))
+	     ((equal? mc 3)(report-data-opt))
 	     (else (wrch))))
 
