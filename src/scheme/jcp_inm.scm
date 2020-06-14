@@ -2,44 +2,44 @@
 !#
 
 
-; ==============================================================================
-;
-; jcp_inm.scm
-;
-; Data processing for the jcp_inm.db dataset. 
-;
-; Compilation:
-;
-; On a shell window simply write
-; - guile jcp_inm.scm<ENT>
-;
-; ==============================================================================
-;
-; Copyright (C) 2018 - 2019  Pablo Edronkin (pablo.edronkin at yahoo.com)
-;
-;   This program is free software: you can redistribute it and/or modify
-;   it under the terms of the GNU Lesser General Public License as published by
-;   the Free Software Foundation, either version 3 of the License, or
-;   (at your option) any later version.
-;
-;   This program is distributed in the hope that it will be useful,
-;   but WITHOUT ANY WARRANTY; without even the implied warranty of
-;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;   GNU Lesser General Public License for more details.
-;
-;   You should have received a copy of the GNU Lesser General Public License
-;   along with this program.  If not, see <https://www.gnu.org/licenses/>.
-;
-; ==============================================================================
+;; ==============================================================================
+;;
+;; jcp_inm.scm
+;;
+;; Data processing for the jcp_inm.db dataset. 
+;;
+;; Compilation:
+;;
+;; On a shell window simply write
+;; - guile jcp_inm.scm<ENT>
+;;
+;; ==============================================================================
+;;
+;; Copyright (C) 2018 - 2020  Pablo Edronkin (pablo.edronkin at yahoo.com)
+;;
+;;   This program is free software: you can redistribute it and/or modify
+;;   it under the terms of the GNU Lesser General Public License as published by
+;;   the Free Software Foundation, either version 3 of the License, or
+;;   (at your option) any later version.
+;;
+;;   This program is distributed in the hope that it will be useful,
+;;   but WITHOUT ANY WARRANTY; without even the implied warranty of
+;;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;;   GNU Lesser General Public License for more details.
+;;
+;;   You should have received a copy of the GNU Lesser General Public License
+;;   along with this program.  If not, see <https://www.gnu.org/licenses/>.
+;;
+;; ==============================================================================
 
 
-; Modules. These will be almost always required.
+;; Modules. These will be almost always required.
 (use-modules (grsp grsp0)
 	     (srfi srfi-19))
 
 
-; Vars. Change the path(s) to suit your system and installation.
-;
+;; Vars. Change the path(s) to suit your system and installation.
+;;
 (define mc 0)
 (define sqlp-path "/home/pablo/Programs/C++/sqlp/sqlp")
 (define database "/home/pablo/Datasets/Jcp_Inm/data/jcp_inm.db")
@@ -51,17 +51,17 @@
 (define opt "? ")
 
 
-; wrch - Displays a "wrong choice" message.
-;
+;; wrch - Displays a "wrong choice" message.
+;;
 (define (wrch)
   (grsp-ld "Wrong choice. Please try again.\n"))
 
 
-; ask - Select the day of the week.
-;
-; Output:
-; - A three-letter string with the name of the day.
-;
+;; ask - Select the day of the week.
+;;
+;; Output:
+;; - A three-letter string with the name of the day.
+;;
 (define (ask-day)
   (let ((res "")
 	(mc 0))
@@ -86,23 +86,23 @@
     res))
 
 
-; mult-adr - Construct a block address based on a choice.
-;
-; Arguments
-; - p_n: number.
-;
-; Output:
-; - p_n multiplied by 100 to build the block address.
-;
+;; mult-adr - Construct a block address based on a choice.
+;;
+;; Arguments
+;; - p_n: number.
+;;
+;; Output:
+;; - p_n multiplied by 100 to build the block address.
+;;
 (define (mult-adr p_n)
   (let ((res 0))
     (set! res (* p_n 100))
     res))
 
 
-; ask-street-number - Establish the street block number to which a measurement
-; belongs.
-;
+;; ask-street-number - Establish the street block number to which a measurement
+;; belongs.
+;;
 (define (ask-street-number)
   (let ((res 0)
 	(mc 0))
@@ -151,9 +151,9 @@
     res))
 
 
-; ask-street-abr - Presents a menu with the various street name abbreviations.
-; used in the dataset.
-;
+;; ask-street-abr - Presents a menu with the various street name abbreviations.
+;; used in the dataset.
+;;
 (define (ask-street-abr)
   (let ((res "")
 	(mc 0))
@@ -192,16 +192,16 @@
     res))
 
 
-; menu-present - This is a presentation for the program and what it intends to
-; do.
-;
-; Arguments:
-; - p_ti: title.
-; - p_te: text.
-; - p_en: if you want an <ENT> message to appear.
-;  - "y" for yes.
-;  - "n" for no.
-;
+;; menu-present - This is a presentation for the program and what it intends to
+;; do.
+;;
+;; Arguments:
+;; - p_ti: title.
+;; - p_te: text.
+;; - p_en: if you want an <ENT> message to appear.
+;;  - "y" for yes.
+;;  - "n" for no.
+;;
 (define (menu-present p_ti p_te p_en)
   (let ((n 0))
     (clear)
@@ -210,11 +210,11 @@
     (if (eq? p_en "y")(set! n (grsp-ask "Press <ENT> to continue.")))))
 
 
-; menu-enter-data - Enter data menu.
-;
-; Output:
-; - Returns an integer corresponding to the menu option selected.
-;
+;; menu-enter-data - Enter data menu.
+;;
+;; Output:
+;; - Returns an integer corresponding to the menu option selected.
+;;
 (define (menu-enter-data)
   (let ((res 0))
     (grsp-ld "0 - Back to main.")
@@ -224,11 +224,11 @@
     res))
 
 
-; menu-block-data - Block data menu.
-;
-; Output:
-; - Returns an integer corresponding to the menu option selected.
-;
+;; menu-block-data - Block data menu.
+;;
+;; Output:
+;; - Returns an integer corresponding to the menu option selected.
+;;
 (define (menu-block-data)
   (let ((res 0))
     (grsp-ld "0 - No more records.")
@@ -237,11 +237,11 @@
     res))
 
 
-; menu-process-data - Process data menu.
-;
-; Output:
-; - Returns an integer corresponding to the menu option selected.
-;
+;; menu-process-data - Process data menu.
+;;
+;; Output:
+;; - Returns an integer corresponding to the menu option selected.
+;;
 (define (menu-process-data)
   (let ((res 0))
     (grsp-ld "0 - Main menu.")
@@ -252,11 +252,11 @@
     res))
 
 
-; menu-report-data - Report data menu.
-;
-; Output:
-; - Returns an integer corresponding to the menu option selected.
-;
+;; menu-report-data - Report data menu.
+;;
+;; Output:
+;; - Returns an integer corresponding to the menu option selected.
+;;
 (define (menu-report-data)
   (let ((res 0))
     (grsp-ld "0 - Main menu.")
@@ -267,19 +267,19 @@
     res))
 
 
-; write-prep-sql - Overwrites the contents of prep.sql with the values
-; contained in the arguments. 
-;
-; Arguments:
-; - p_q1: q1.
-; - p_q2: q2.
-; - p_q3: q3.
-; - p_q4: q4.
-; - p_q5: q5.
-; - p_q6: q6.
-; - p_q7: q7.
-; - p_q8: q8.
-;
+;; write-prep-sql - Overwrites the contents of prep.sql with the values
+;; contained in the arguments. 
+;;
+;; Arguments:
+;; - p_q1: q1.
+;; - p_q2: q2.
+;; - p_q3: q3.
+;; - p_q4: q4.
+;; - p_q5: q5.
+;; - p_q6: q6.
+;; - p_q7: q7.
+;; - p_q8: q8.
+;;
 (define (write-prep-sql p_q1 p_q2 p_q3 p_q4 p_q5 p_q6 p_q7)
   (let ((n "\n"))
     (grsp-save-to-file
@@ -287,8 +287,8 @@
      (strings-append (list sql-path "prep.sql") 0) "w")))
 
 
-; update-prep - Updates data in prep.sql.
-;
+;; update-prep - Updates data in prep.sql.
+;;
 (define (update-prep)
   (let ((q8 "UPDATE trf_pers SET"))    
     (write-prep-sql "UPDATE trf_pers SET Status = 'enabled' WHERE Status IS NULL;"
@@ -327,15 +327,15 @@
 		     0))))
     
 
-; run-prep-sql - Runs the existing prep.sql.
-;
+;; run-prep-sql - Runs the existing prep.sql.
+;;
 (define (run-prep-sql)
   (grsp-cd "Running prep.sql...\n")
   (grsp-sqlp sqlp-path database (strings-append (list sql-path "prep.sql") 0) oqc))
   
 
-; input-record-ppers - Input a record in trf_pers.
-;
+;; input-record-ppers - Input a record in trf_pers.
+;;
 (define (input-record-ppers)
   (grsp-sqlp sqlp-path
 	     database
@@ -357,9 +357,9 @@
 	     oqc))
 
 
-; enter-block-data - Enter block data. allows for data input to trf_pers, and 
-; batch update with prep.sql once finished entering records.
-;
+;; enter-block-data - Enter block data. allows for data input to trf_pers, and 
+;; batch update with prep.sql once finished entering records.
+;;
 (define (enter-block-data)
   (let ((mc -1))
     (while (equal? #f (equal? mc 0))
@@ -370,8 +370,8 @@
 		 (else (wrch))))))
 
 
-; enter-data - Data input function.
-; 
+;; enter-data - Data input function.
+;; 
 (define (enter-data)
   (let ((mc -1))
     (while (equal? #f (equal? mc 0))
@@ -383,9 +383,9 @@
 		 (else (wrch))))))
 
 
-; process-data-opt - Enter block data. allows for data input to trf_pers, and 
-; batch update with prep.sql once finished entering records.
-;
+;; process-data-opt - Enter block data. allows for data input to trf_pers, and 
+;; batch update with prep.sql once finished entering records.
+;;
 (define (process-data-opt)
   (let ((mc -1))
     (while (equal? #f (equal? mc 0))
@@ -398,8 +398,8 @@
 		 (else (wrch))))))
 
 
-; report-data-opt - Report data options.
-;
+;; report-data-opt - Report data options.
+;;
 (define (report-data-opt)
   (let ((mc -1))
     (while (equal? #f (equal? mc 0))
@@ -412,29 +412,29 @@
 		 (else (wrch))))))
 
 
-; process-data1 - Data processing sqlp call, pers.
-;
+;; process-data1 - Data processing sqlp call, pers.
+;;
 (define (process-data1)
   (grsp-cd "Processing data (pers)...\n")
   (grsp-sqlp sqlp-path database (strings-append (list sql-path "calc.sql") 0) oqc))
 
 
-; process-data2 - Data processing sqlp call, vehp.
-;
+;; process-data2 - Data processing sqlp call, vehp.
+;;
 (define (process-data2)
   (grsp-cd "Processing data (vehp)...\n")
   (grsp-sqlp sqlp-path database (strings-append (list sql-path "calc2.sql") 0) oqc))
 
 
-; process-data2 - Data processing sqlp call, vehp.
-;
+;; process-data2 - Data processing sqlp call, vehp.
+;;
 (define (process-data3)
   (grsp-cd "Processing data (vehr)...\n")
   (grsp-sqlp sqlp-path database (strings-append (list sql-path "calc3.sql") 0) oqc))
 
 
-; report-data1 - Data reporting sqlp call (pers).
-;
+;; report-data1 - Data reporting sqlp call (pers).
+;;
 (define (report-data1)
   (grsp-cd "Generating report (pers)...\n")
   (grsp-sqlp sqlp-path database (strings-append (list sql-path "rep.sql") 0) oqcs)
@@ -444,8 +444,8 @@
   (grsp-ask "Press <ENT> to continue."))
 
 
-; report-data1 - Data reporting sqlp call (vehp).
-;
+;; report-data1 - Data reporting sqlp call (vehp).
+;;
 (define (report-data2)
   (grsp-cd "Generating report (vehp)...\n")
   (grsp-sqlp sqlp-path database (strings-append (list sql-path "rep2.sql") 0) oqcs)
@@ -455,8 +455,8 @@
   (grsp-ask "Press <ENT> to continue."))
 
 
-; report-data1 - Data reporting sqlp call (vehr).
-;
+;; report-data1 - Data reporting sqlp call (vehr).
+;;
 (define (report-data3)
   (grsp-cd "Generating report (vehr)...\n")
   (grsp-sqlp sqlp-path database (strings-append (list sql-path "rep3.sql") 0) oqcs)
@@ -466,11 +466,11 @@
   (grsp-ask "Press <ENT> to continue."))
 
 
-; menu-main - Main menu of the program.
-;
-; Output:
-; - Returns an integer corresponding to the menu option selected.
-;
+;; menu-main - Main menu of the program.
+;;
+;; Output:
+;; - Returns an integer corresponding to the menu option selected.
+;;
 (define (menu-main)
   (let ((res 0))
     (grsp-ld "0 - Exit.")
@@ -481,7 +481,7 @@
     res))
 
 
-; Main program
+;; Main program.
 (set! mc -1)
 (while (equal? #f (equal? mc 0))
        (menu-present "Jcp_inm - main" pdf "n")
